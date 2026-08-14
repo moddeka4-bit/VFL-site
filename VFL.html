@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VFL — Volkanovski Fighting League</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05060f;
+  --bg2:#0a0b1e;
+  --blue:#2b3bff;
+  --violet:#7a2bff;
+  --pink:#ff3ec8;
+  --cyan:#38e8ff;
+  --text:#e8e9ff;
+  --muted:#9aa0c7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Montserrat',system-ui,sans-serif;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* ===== FON / BLOBS ===== */
+.bg{position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(1200px 800px at 80% -10%, #101347 0%, transparent 60%),
+  radial-gradient(900px 700px at 0% 100%, #14093a 0%, transparent 60%),
+  linear-gradient(160deg,#05060f 0%,#080a1c 50%,#04050c 100%);
+}
+.blob{position:fixed;filter:blur(70px);opacity:.75;border-radius:50%;z-index:-1;animation:float 18s ease-in-out infinite;mix-blend-mode:screen}
+.b1{width:520px;height:420px;left:18%;top:-8%;background:radial-gradient(circle at 30% 30%,var(--blue),transparent 65%)}
+.b2{width:600px;height:500px;left:38%;top:8%;background:radial-gradient(circle at 60% 40%,var(--violet),transparent 65%);animation-delay:-4s}
+.b3{width:460px;height:380px;left:22%;top:34%;background:radial-gradient(circle at 50% 50%,var(--pink),transparent 65%);animation-delay:-8s}
+.b4{width:420px;height:360px;right:6%;top:22%;background:radial-gradient(circle at 50% 50%,#4f2bff,transparent 65%);animation-delay:-12s}
+@keyframes float{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(40px,-30px,0) scale(1.12)}
+  66%{transform:translate3d(-30px,25px,0) scale(.94)}
+}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(rgba(255,255,255,.35) .6px, transparent .7px);
+  background-size:3px 3px;
+  mask-image:radial-gradient(60% 50% at 50% 35%, #000 0%, transparent 75%);
+  -webkit-mask-image:radial-gradient(60% 50% at 50% 35%, #000 0%, transparent 75%);
+}
+
+/* ===== NAV ===== */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(5,6,15,.45);border-bottom:1px solid rgba(255,255,255,.06)}
+nav{max-width:1240px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.32em;font-size:14px}
+.logo .ring{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);position:relative}
+.logo .ring::after{content:"";position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink))}
+.menu{margin-left:auto;display:flex;gap:30px;font-size:12px;letter-spacing:.22em;color:var(--muted)}
+.menu a{transition:.25s}
+.menu a:hover,.menu a.active{color:#fff;text-shadow:0 0 14px rgba(122,43,255,.9)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px 26px;border-radius:40px;font-size:12px;font-weight:700;letter-spacing:.18em;
+  border:1px solid rgba(255,255,255,.22);color:#fff;transition:.3s;white-space:nowrap;
+}
+.btn:hover{border-color:transparent;background:linear-gradient(90deg,var(--blue),var(--violet),var(--pink));box-shadow:0 0 30px rgba(122,43,255,.55);transform:translateY(-2px)}
+.btn-solid{background:linear-gradient(90deg,var(--blue),var(--violet) 55%,var(--pink));border-color:transparent;box-shadow:0 0 34px rgba(122,43,255,.45)}
+.btn-solid:hover{filter:brightness(1.12)}
+.btn-sm{padding:9px 20px;font-size:11px}
+
+/* ===== HERO ===== */
+.hero{max-width:1240px;margin:0 auto;padding:110px 28px 130px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;min-height:78vh}
+.kicker{font-size:11px;letter-spacing:.4em;color:var(--cyan);margin-bottom:22px}
+.hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;line-height:.95;letter-spacing:-.02em}
+.hero h1 span{background:linear-gradient(90deg,#7fd4ff,#8f6bff 45%,#ff5fd2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin-top:24px;max-width:520px;color:var(--muted);font-size:15px;line-height:1.8;font-weight:300}
+.hero-actions{margin-top:38px;display:flex;flex-wrap:wrap;gap:14px}
+.side{text-align:right}
+.side .creative{font-family:'Cormorant Garamond',serif;font-size:38px;letter-spacing:.02em}
+.side .sub{font-size:11px;letter-spacing:.3em;color:var(--muted);margin-top:6px}
+.side .list{margin-top:34px;display:flex;flex-direction:column;gap:14px;font-size:10px;letter-spacing:.28em;color:rgba(232,233,255,.55)}
+.stats{display:flex;gap:34px;margin-top:52px;flex-wrap:wrap}
+.stat b{display:block;font-size:26px;font-weight:800;background:linear-gradient(90deg,#8f6bff,#ff5fd2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:10px;letter-spacing:.24em;color:var(--muted)}
+
+/* ===== SECTIONS ===== */
+section{max-width:1240px;margin:0 auto;padding:90px 28px;position:relative}
+.tag{font-size:11px;letter-spacing:.36em;color:var(--cyan);margin-bottom:16px}
+h2{font-size:clamp(26px,3.6vw,44px);font-weight:800;letter-spacing:-.01em;margin-bottom:18px}
+h2 em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;background:linear-gradient(90deg,#8f6bff,#ff5fd2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);max-width:760px;line-height:1.85;font-weight:300;font-size:15px}
+.grid{display:grid;gap:20px;margin-top:44px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{
+  position:relative;padding:30px 28px;border-radius:20px;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.08);
+  transition:.35s;overflow:hidden;
+}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:20px;padding:1px;background:linear-gradient(120deg,var(--blue),var(--violet),var(--pink));opacity:0;transition:.35s;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.card:hover{transform:translateY(-6px);background:linear-gradient(160deg,rgba(122,43,255,.14),rgba(255,255,255,.02))}
+.card:hover::before{opacity:1}
+.card .num{font-size:11px;letter-spacing:.3em;color:var(--pink);margin-bottom:14px}
+.card h3{font-size:17px;font-weight:700;margin-bottom:12px}
+.card p,.card li{color:var(--muted);font-size:14px;line-height:1.75;font-weight:300}
+.card ul{margin-top:10px;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+
+/* steps */
+.steps{counter-reset:s;margin-top:44px;display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:76px 1fr;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.07)}
+.step:last-child{border-bottom:1px solid rgba(255,255,255,.07)}
+.step .n{font-size:30px;font-weight:900;background:linear-gradient(90deg,#8f6bff,#ff5fd2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.step h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.step p{color:var(--muted);font-size:14px;line-height:1.8;font-weight:300}
+
+/* plan / code look */
+.plan{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.round{padding:26px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg,rgba(43,59,255,.10),rgba(255,255,255,.02))}
+.round h3{font-size:15px;letter-spacing:.2em;margin-bottom:16px;color:#fff}
+.round .lbl{font-size:10px;letter-spacing:.24em;color:var(--cyan);margin:16px 0 8px}
+.round .lbl.b{color:var(--pink)}
+.round ul{padding-left:16px;display:flex;flex-direction:column;gap:7px}
+.round li{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.example{margin-top:34px;padding:26px 28px;border-radius:18px;border:1px dashed rgba(255,255,255,.16);background:rgba(255,255,255,.02);font-size:14px;line-height:1.85;color:#cfd2f5;font-weight:300;white-space:pre-line}
+.bad{border-left:3px solid #ff4d6d;padding-left:16px;color:#ff9fb0;margin-bottom:18px;font-size:14px}
+.good{border-left:3px solid #3ddc97;padding-left:16px;color:#a8f0d0;font-size:14px;line-height:1.8}
+
+/* rating */
+.rating{display:flex;flex-wrap:wrap;gap:26px;align-items:center;justify-content:space-between;padding:38px 34px;border-radius:22px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(120deg,rgba(43,59,255,.18),rgba(255,62,200,.12))}
+.rules{margin-top:26px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.rule{display:flex;gap:12px;font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
+.rule i{color:var(--cyan);font-style:normal}
+
+/* cta */
+.cta{text-align:center;padding:110px 28px}
+.cta h2{font-size:clamp(30px,5vw,60px)}
+.cta p{margin:18px auto 38px;max-width:560px;color:var(--muted);font-weight:300;line-height:1.8}
+.links{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+
+footer{border-top:1px solid rgba(255,255,255,.07);padding:34px 28px;text-align:center;color:var(--muted);font-size:11px;letter-spacing:.2em}
+
+.reveal{opacity:0;transform:translateY(26px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:70px}
+  .side{text-align:left}
+  .g3,.g2,.plan,.rules{grid-template-columns:1fr}
+  .menu{display:none}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="blob b4"></div>
+<div class="grain"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="ring"></span> VFL</div>
+    <div class="menu">
+      <a href="#how" class="active">КАК ЭТО РАБОТАЕТ</a>
+      <a href="#plan">ПЛАН БОЯ</a>
+      <a href="#tactics">ТАКТИКА</a>
+      <a href="#rating">РЕЙТИНГ</a>
+    </div>
+    <a class="btn btn-sm btn-solid" href="https://t.me/alexvolkanovski" target="_blank" rel="noopener">ВСТУПИТЬ В ЛИГУ</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="kicker">VOLKANOVSKI FIGHTING LEAGUE</div>
+    <h1>VFL —<br>виртуальная лига,<br>где побеждает <span>тактика</span></h1>
+    <p>Здесь не жмут кнопки и не крутят рандом. Ты берёшь бойца, пишешь полный план на 3 раунда, твой соперник пишет свой — и ИИ (DeepSeek / Gemini) симулирует бой, учитывая оба плана. Чем глубже и умнее твой геймплан, тем выше шанс переиграть соперника.</p>
+    <div class="hero-actions">
+      <a class="btn btn-solid" href="https://t.me/alexvolkanovski" target="_blank" rel="noopener">🥊 ВСТУПИТЬ В ЛИГУ</a>
+      <a class="btn" href="#how">ГАЙД ДЛЯ НОВИЧКА</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>3</b><span>РАУНДА В БОЮ</span></div>
+      <div class="stat"><b>2</b><span>ПЛАНА В СИМУЛЯЦИИ</span></div>
+      <div class="stat"><b>AI</b><span>DEEPSEEK / GEMINI</span></div>
+      <div class="stat"><b>∞</b><span>ВАРИАНТОВ ТАКТИКИ</span></div>
+    </div>
+  </div>
+  <div class="side">
+    <div class="creative">Creative</div>
+    <div class="sub">FIGHT SIMULATION LEAGUE</div>
+    <div class="list">
+      <div>ПЛАН → СИМУЛЯЦИЯ → РЕЗУЛЬТАТ</div>
+      <div>ТРЕНЕРЫ ПОМОГАЮТ НОВИЧКАМ</div>
+      <div>ОФИЦИАЛЬНЫЙ РЕЙТИНГ VFL</div>
+      <div>ВЫБОР СВОБОДНОГО БОЙЦА</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW -->
+<section id="how" class="reveal">
+  <div class="tag">01 — СТРУКТУРА ПРОВЕДЕНИЯ МАТЧЕЙ</div>
+  <h2>Как проходят бои <em>в VFL</em></h2>
+  <p class="lead">Бой в VFL — это дуэль двух тактических умов. Оба участника независимо пишут план на каждый раунд: как проводят раунд, какие действия используют, как пытаются переиграть друг друга. Потом ИИ сводит два плана в одну симуляцию и выдаёт ход раундов.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="n">01</div>
+      <div>
+        <h4>Выбираешь бойца</h4>
+        <p>Смотришь официальный рейтинг VFL. Все, кто есть в рейтинге — уже заняты. Ты выбираешь бойца, которого в рейтинге нет вообще. Брать можно до пяти бойцов.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">02</div>
+      <div>
+        <h4>Пишешь план на каждый раунд</h4>
+        <p>Расписываешь, как именно ты хочешь победить: дистанция, работа первым или вторым номером, комбинации, борьба, темп, защита. Отдельно — план Б на случай, если основной геймплан не идёт.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">03</div>
+      <div>
+        <h4>Соперник делает то же самое</h4>
+        <p>Он тоже пишет свой план и пытается переиграть тебя. Планы не видны друг другу — это честная тактическая дуэль.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">04</div>
+      <div>
+        <h4>ИИ симулирует бой</h4>
+        <p>DeepSeek / Gemini прогоняет симуляцию с учётом обоих планов и выдаёт, как прошли раунды: кто навязал свой бой, где сработал план Б, кто кого переиграл.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">05</div>
+      <div>
+        <h4>Чем шире план — тем выше шанс на победу</h4>
+        <p>Общие фразы почти не работают. Детали, конкретные действия, реакции на ситуации и продуманный план Б напрямую повышают твои шансы.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card">
+      <div class="num">ТРЕНЕРЫ</div>
+      <h3>Тебе помогут</h3>
+      <p>В лиге есть тренеры — опытные участники, которые уже умеют составлять планы. Они подскажут, как построить геймплан, что добавить и где твой план слабый.</p>
+    </div>
+    <div class="card">
+      <div class="num">СИМУЛЯЦИЯ</div>
+      <h3>Решает не рандом</h3>
+      <p>ИИ учитывает оба плана целиком: логику, стиль, реакции. Поэтому продуманная тактика обычно бьёт «сильного бойца без плана».</p>
+    </div>
+    <div class="card">
+      <div class="num">РОСТ</div>
+      <h3>Учись на раундах</h3>
+      <p>После симуляции видно, где план развалился. Разбирай раунды, правь ошибки и на следующий бой приходи с более широким геймпланом.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TACTICS -->
+<section id="tactics" class="reveal">
+  <div class="tag">02 — ГАЙД ПО ТАКТИКЕ</div>
+  <h2>Как писать план, <em>который побеждает</em></h2>
+  <p class="lead">Главное правило: не пиши общими словами. Распиши, КАК именно ты хочешь победить — полную стратегию, а не намерение.</p>
+
+  <div class="example">
+    <div class="bad">❌ Плохо: «Я хочу победить и буду бить лоу-кики.»</div>
+    <div class="good">✅ Хорошо: «Работаю вторым номером на длинной дистанции. Встречаю джебом на его вход, после его двойки — уход влево и правый кросс по корпусу. Каждые 30 секунд добавляю лоу-кик по передней ноге, чтобы сбить его подвижность и заставить стоять. Если он начинает продавливать — принимаю клинч у сетки, работаю коленями и сбиваю темп. Если пропускаю серию — закрываюсь, разрываю дистанцию боковым шагом, не размениваюсь.»</div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card">
+      <div class="num">01</div>
+      <h3>Стиль и дистанция</h3>
+      <p>Определись сразу:</p>
+      <ul>
+        <li>Первый или второй номер</li>
+        <li>Длинная / средняя / клинч</li>
+        <li>Ударник или борец</li>
+        <li>Темп: высокий, рваный, экономный</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="num">02</div>
+      <h3>Конкретные действия</h3>
+      <p>Пиши не «бью», а что именно:</p>
+      <ul>
+        <li>Комбинации: джеб–кросс–лоу</li>
+        <li>Работа по корпусу и по ногам</li>
+        <li>Тайминги и заходы</li>
+        <li>Финиш: нокаут или сабмишн</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="num">03</div>
+      <h3>План Б на всё</h3>
+      <p>Заранее опиши реакции:</p>
+      <ul>
+        <li>Если не пробиваю — клинч / борьба</li>
+        <li>Если пропускаю — защита, уходы</li>
+        <li>Если устал — сброс темпа, сетка</li>
+        <li>Если веду — контроль и минимум риска</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="num">🥊 ЗАЩИТА — НЕ ОБЯЗАТЕЛЬНО, ТОЛЬКО ЕСЛИ НАДО</div>
+      <h3>Защита от рук и ног</h3>
+      <p><b>От рук:</b></p>
+      <ul>
+        <li>Джеб</li>
+        <li>Кросс</li>
+        <li>Хук</li>
+        <li>Апперкот</li>
+      </ul>
+      <p style="margin-top:16px"><b>От ног:</b></p>
+      <ul>
+        <li>Лоу-кик</li>
+        <li>Хай-кик</li>
+        <li>Мидл-кик</li>
+        <li>Колени</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="num">🥊 ЗАЩИТА</div>
+      <h3>Защита от партера</h3>
+      <ul>
+        <li>Перевод</li>
+        <li>Перевод у сетки</li>
+        <li>Действия в борьбе</li>
+      </ul>
+      <p style="margin-top:18px">Блок защиты добавляется по желанию — если считаешь, что в этом бою тебе нужно отдельно прописать, как ты закрываешься от конкретного оружия соперника.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN -->
+<section id="plan" class="reveal">
+  <div class="tag">03 — ШАБЛОН</div>
+  <h2>🥊 План боя <em>(3 раунда)</em></h2>
+  <p class="lead">Используй этот каркас как основу. Каждый пункт раскрывай своими словами и деталями — чем расширеннее план, тем больше шансов на победу.</p>
+
+  <div class="plan">
+    <div class="round">
+      <h3>РАУНД 1</h3>
+      <div class="lbl">ОСНОВНОЙ ГЕЙМПЛАН</div>
+      <ul>
+        <li>Разведка, работа первым / вторым номером, дистанция</li>
+        <li>Удары, комбинации, лоу-кики, джеб</li>
+        <li>Контроль темпа, движение, чтение соперника</li>
+      </ul>
+      <div class="lbl b">ПЛАН Б</div>
+      <ul>
+        <li>Если не получается — клинч / борьба / сброс темпа</li>
+        <li>Если пропускаем — защита, уходы, не размениваться</li>
+      </ul>
+    </div>
+    <div class="round">
+      <h3>РАУНД 2</h3>
+      <div class="lbl">ОСНОВНОЙ ГЕЙМПЛАН</div>
+      <ul>
+        <li>Увеличение темпа, давление</li>
+        <li>Более длинные комбинации, работа по корпусу</li>
+        <li>Контроль центра, навязывание боя</li>
+      </ul>
+      <div class="lbl b">ПЛАН Б</div>
+      <ul>
+        <li>Если устали — клинч, борьба, удержание у сетки</li>
+        <li>Если соперник перехватывает — контратаки, защита</li>
+      </ul>
+    </div>
+    <div class="round">
+      <h3>РАУНД 3</h3>
+      <div class="lbl">ОСНОВНОЙ ГЕЙМПЛАН</div>
+      <ul>
+        <li>Финальный темп, активность</li>
+        <li>Забрать бой по ударам / давлению</li>
+        <li>Работа до конца без пауз</li>
+      </ul>
+      <div class="lbl b">ПЛАН Б</div>
+      <ul>
+        <li>Если ведём — контроль и минимизация риска</li>
+        <li>Если проигрываем — агрессия, риск, попытка финиша</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- RATING -->
+<section id="rating" class="reveal">
+  <div class="tag">04 — РЕЙТИНГ</div>
+  <h2>❗️Официальный <em>Рейтинг VFL</em>❗️</h2>
+  <div class="rating">
+    <div style="max-width:620px">
+      <p class="lead">Все бойцы, которые есть в рейтинге — уже заняты. Выбирай тех, кого в этом рейтинге нет вообще. Брать можно до пяти бойцов.</p>
+    </div>
+    <a class="btn btn-solid" href="https://telegra.ph/Rejting-VFL-05-16" target="_blank" rel="noopener">ОТКРЫТЬ РЕЙТИНГ</a>
+  </div>
+  <div class="rules">
+    <div class="rule"><i>→</i><span>Проверь рейтинг перед выбором бойца</span></div>
+    <div class="rule"><i>→</i><span>Занятых бойцов брать нельзя</span></div>
+    <div class="rule"><i>→</i><span>До пяти бойцов на участника</span></div>
+    <div class="rule"><i>→</i><span>Не уверен — спроси тренера или админа</span></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta reveal">
+  <h2>Готов писать <em>свой первый план?</em></h2>
+  <p>Заходи, выбирай свободного бойца, пиши геймплан на 3 раунда — и посмотрим, кто кого переиграет.</p>
+  <div class="links">
+    <a class="btn btn-solid" href="https://t.me/alexvolkanovski" target="_blank" rel="noopener">🥊 ВСТУПИТЬ В ЛИГУ</a>
+    <a class="btn" href="https://t.me/b74uV4hj2lg5OTBi" target="_blank" rel="noopener">ДВОЕЧКА VFL</a>
+    <a class="btn" href="https://t.me/hokailoh" target="_blank" rel="noopener">ТВИТТЕР VFL</a>
+    <a class="btn" href="https://telegra.ph/Rejting-VFL-05-16" target="_blank" rel="noopener">РЕЙТИНГ VFL</a>
+  </div>
+</section>
+
+<footer>VFL — VOLKANOVSKI FIGHTING LEAGUE © 2026 &nbsp;·&nbsp; ПЛАН РЕШАЕТ ВСЁ</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const links=[...document.querySelectorAll('.menu a')];
+window.addEventListener('scroll',()=>{
+  let cur='';
+  document.querySelectorAll('section[id]').forEach(s=>{
+    if(window.scrollY>=s.offsetTop-160)cur=s.id;
+  });
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+});
+
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-.5), y=(e.clientY/window.innerHeight-.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const k=(i+1)*14;
+    b.style.marginLeft=(x*k)+'px';
+    b.style.marginTop=(y*k)+'px';
+  });
+});
+</script>
+</body>
+</html>
